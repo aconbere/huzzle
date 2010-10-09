@@ -1,4 +1,4 @@
-var inProgram = function (prog) {
+var withProgram = function (prog) {
   var api = {};
 
   var canvas
@@ -112,7 +112,7 @@ var drawOnDrag = function (canvas, context, pieceX, pieceY, width, height, offse
 };
 
 $(function () {
-  inProgram(function () {
+  withProgram(function () {
     this.withCanvas(function (canvas, context) {
       var offset = canvas.offset();
       var countX = 10;
