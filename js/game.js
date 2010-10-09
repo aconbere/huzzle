@@ -226,7 +226,7 @@ var findGroups = function (matrix, minSize) {
 
 $(function () {
   game(function () {
-    var canvas = $("#chuzzle-canvas");
+    var canvas = $("#huzzle-canvas");
     var count = [10, 10];
     var pieceWidth = 50;
     this.gameState = { "canvas": canvas
