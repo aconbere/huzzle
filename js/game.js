@@ -41,6 +41,10 @@ var COLORS = [ "#1d5a73"
              , "#8abfb0"
              , "#c4d9bf"
              , "#d91e0d"
+             , "#000"
+             , "ff0000"
+             , "00ff00"
+             , "0000ff"
              ];
 
 COLORS.random = function () {
@@ -50,6 +54,10 @@ COLORS.random = function () {
 // A piece is a rectangle on the board
 var Piece = function (color) {
   this.color = color;
+};
+
+Piece.random = function () {
+  return new Piece(COLORS.random());
 };
 
 Piece.width = 50;
@@ -79,7 +87,9 @@ var Board = function (pieces) {
 
 Board.prototype.draw = function (context) {
   this.matrix.withElements(function (p, x, y) {
-    p.draw(x, y, context);
+    if (p) {
+      p.draw(x, y, context);
+    } 
   });
 };
 
@@ -125,6 +135,7 @@ var rotateGroup = function (gameState) {
 
     // reset our horizontal / vertical lock
     moveXorY = undefined;
+    console.log("wtf");
     return false;
   }, function (e) {
     if (!moveXorY) {
@@ -164,14 +175,28 @@ var rotateGroup = function (gameState) {
 
     return false;
   }, function (e) {
-    gameState.selector = undefined;
     var groups = findGroups(gameState.board.matrix);
-    console.log(groups);
+
     groups.forEach(function (g) {
       g.forEach(function (p) {
-        p.color = "#000";
+        gameState.board.matrix.items[p.y][p.x].color = "#fff";
+        gameState.board.matrix.items[p.y][p.x].toRemove = true;
+        console.log("toRemove");
       });
     });
+
+    gameState.selector = undefined;
+
+//    gameState.board.matrix.compact(function (i, x, y) {
+//      return Piece.random();
+//    });
+    setTimeout(function () {
+      gameState.board.matrix.compact(function (i, x, y) {
+        return Piece.random();
+      });
+    }, 150);
+
+    return false;
   });
 };
 
@@ -195,7 +220,7 @@ var findGroups = function (matrix, minSize) {
       }
     };
 
-    neighbors = [start];
+    neighbors = [{ el: start, x: x, y: y}];
     if (x !== 0) {
       neighbors = neighbors.concat(search(-1, 0));
     }

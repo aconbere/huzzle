@@ -40,6 +40,23 @@ RotatableMatrix.prototype.getColumn = function (x) {
   return column;
 };
 
+// takes all falsy values and puts them at the beginning
+// of a row
+RotatableMatrix.prototype.compact = function (callback) {
+  for (var y = 0; y < this.height; y++) {
+    var row = this.getRow(y);
+    for (var x = 0; x < this.width; x++) {
+      var i = row[x];
+      if (i.toRemove) {
+        console.log("removing");
+        row.splice(x, 1);
+        row.unshift(callback(i,x,y));
+        this.setRow(y, row);
+      }
+    }
+  };
+};
+
 // @y -> Int
 // @direction -> Int
 RotatableMatrix.prototype.rotateRow = function (y, count) {
